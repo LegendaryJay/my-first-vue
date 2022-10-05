@@ -24,6 +24,9 @@ app.component('FeatureList', {
             changePage(newPage) {
                 this.$emit('change-page', newPage)
             },
+            remove(index) {
+                this.$emit('remove', index)
+            },
             add() {
                 alert('add')
             },
@@ -62,6 +65,7 @@ app.component('FeatureList', {
                   v-for="(feature, index) in features"
                   :feature="feature"
                   :index="index"
+                  @remove="remove"
               ></feature-list-item>
 
               <div class="py-3 text-center">
@@ -112,6 +116,10 @@ app.component('FeatureListItem', {
             down() {
                 this.switchFeatures(this.feature, this.$parent.features[this.index + 1])
             },
+            remove() {
+                this.$emit('remove', this.feature)
+            }
+
         },
         computed: {},
         template: `
@@ -125,6 +133,7 @@ app.component('FeatureListItem', {
                   @up="up"
                   @down="down"
                   @edit="edit"
+                  @remove="remove"
                   :item="feature"
                   :index="index"
                   :array-length="this.$parent.features.length"

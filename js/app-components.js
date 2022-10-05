@@ -12,6 +12,18 @@ app.component('pageComponent', {
             changePage(newPage) {
                 this.currentPage = newPage
             },
+            removeCategory(item) {
+                this.$parent.featureList.forEach((x, index) => {
+
+                    if (x.category === item.id){
+                        this.$parent.featureList[index].category = -1
+                    }
+                })
+                this.$parent.categoryList = this.$parent.categoryList.filter(x => item.id !== x.id)
+            },
+            removeFeature(item) {
+                this.$parent.featureList = this.$parent.featureList.filter(x => item.id !== x.id)
+            }
         },
         props: {
             pageFeatures: {
@@ -25,10 +37,17 @@ app.component('pageComponent', {
         },
         computed: {
             orderedCategories: function () {
-                return this.pageCategories.sort((a, b) => a.position - b.position)
+                console.log(this.pageCategories)
+                let newArray = this.pageCategories.sort((a, b) => a.position - b.position)
+                newArray.push(
+
+                )
+                return newArray
             },
             orderedFilteredFeatures: function () {
-                return this.pageFeatures.filter(feature => this.orderedCategories[this.currentPage].id === feature.category).sort((a, b) => a.position - b.position)
+
+                let thisCategory = this.orderedCategories?.[this.currentPage]
+                return (typeof thisCategory == "undefined") ? [] : this.pageFeatures.filter(feature => thisCategory.id === feature.category).sort((a, b) => a.position - b.position)
 
             },
         },
@@ -38,12 +57,14 @@ app.component('pageComponent', {
           <category-list
               :categories="orderedCategories"
               @change-page="changePage"
+              @remove="removeCategory"
           ></category-list>
 
           <feature-list
               :features="orderedFilteredFeatures"
               :categories="orderedCategories"
               @change-page="changePage"
+              @remove="removeFeature"
           ></feature-list>
           </div>
         `
@@ -90,6 +111,9 @@ app.component('editIcons', {
             edit() {
                 this.$emit('edit', this.item)
             },
+            remove() {
+                this.$emit('remove', this.item)
+            },
             iconSizeClass() {
                 switch (this.iconSize) {
                     case 0:
@@ -115,6 +139,12 @@ app.component('editIcons', {
 
         template: `
           <div class="d-flex justify-content-around">
+          <div class="edit-icon-set text-danger"
+               @click.stop="this.remove()"
+          >
+            <i class="fa-solid fa-trash" :class="iconSizeClass()"></i>
+          </div>
+
           <div class="edit-icon-set"
                @click.stop="isFirst() ? null : this.up()"
                :class="{disabled : isFirst()}"
@@ -138,40 +168,46 @@ app.component('editIcons', {
 )
 
 app.component('AppModal', {
-    props: {
-        title: {
-            type:String,
-            default: 'Modal Title'
-        },
-        id: {
-            type:String,
-            default: 'Modal Title'
-        },
+        props: {
+            title: {
+                type: String,
+                default: 'Modal Title'
+            },
+            id: {
+                type: String,
+                default: 'app-modal'
+            },
 
-    },
+        },
+        mounted() {
+            this.$el.addEventListener('show.bs.modal', function () {
+                this.querySelector('[autofocus]')?.focus();
+            })
+        },
         template: `
-            <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id + '-modalTitle'"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <form>
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" :id="id + 'modalTitle'">{{ title }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <slot></slot>
-                            </div>
-                            <div class="modal-footer">
-                                <slot name="footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </slot>
-                            </div>
-                        </div>
-                    </form>
+          <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id + '-modalTitle'"
+               aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <form>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" :id="id + 'modalTitle'">{{ title }}</h5>
+                  <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
-            </div>
-`
+                <div class="modal-body">
+                  <slot></slot>
+                </div>
+                <div class="modal-footer">
+                  <slot name="footer">
+                    <close-button>
+                    </close-button>
+                  </slot>
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        `
     }
 )
 
@@ -192,6 +228,40 @@ app.component('AppModal', {
 //                         </div>
 
 
+//
+// modalInfo{
+//     isNew = true
+//     item = object
+// }
 
 
-//                        <button type="submit" class="btn btn-primary">Add It</button>
+app.component('categoryModal', {
+        props: {
+            category: {
+                type: Object,
+            },
+
+        },
+        methods: {
+            onSubmit() {
+                this.$emit('on-submit', this.category)
+            },
+            onDelete() {
+                this.$emit('on-delete', this.category)
+            },
+        },
+        template: `
+          <app-modal
+              id="category-modal"
+              title="Edit Category"
+          >
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input id="name" type="text" class="form-control" v-model:category.name autofocus>
+          </div>
+          <template #footer>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </template>
+          </app-modal>`
+    }
+)

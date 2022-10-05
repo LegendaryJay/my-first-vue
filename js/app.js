@@ -1,15 +1,8 @@
 const app = Vue.createApp({
-    // data: all the data for the app, must return an object
-
-    // ## feature ## //
-    //title
-    //position
-    //category
-    //img
-    //description
-
     data: function () {
         return {
+            categoryNextIndex: 2,
+            featureNextIndex: 4,
             currentPage: {
                 id:0
             },
@@ -24,11 +17,19 @@ const app = Vue.createApp({
                     id: 1,
                     title: 'Upgrades',
                     position: 1
+                },
+                {
+                    title: "[undefined]",
+                    id: -1,
+                    position: 1000
                 }
+
             ],
+
             featureList: [
                 {
                     title: 'New Challenge to Minecraft!',
+                    id: 0,
                     position: 0,
                     category: 0,
                     img: "",
@@ -41,6 +42,7 @@ const app = Vue.createApp({
                 },
                 {
                     title: 'Choosing the tree',
+                    id: 1,
                     position: 1,
                     category: 0,
                     img: "",
@@ -51,6 +53,7 @@ const app = Vue.createApp({
                 },
                 {
                     title: 'Growing Stick',
+                    id: 2,
                     position: 2,
                     category: 0,
                     img: "",
@@ -64,6 +67,7 @@ const app = Vue.createApp({
                 },
                 {
                     title: 'Home upgrade: Reach',
+                    id: 3,
                     position: 0,
                     category: 1,
                     img: "",
@@ -74,40 +78,10 @@ const app = Vue.createApp({
                 },
             ],
 
-            newItem: {
-                name: '',
-                qty: 1,
-                category: 'need',
-                purchased: false,
-            },
-            shoppingList: [
-                {name: 'Hammer', qty: 1, purchased: true, category: 'need'},
-                {name: 'Nails', qty: 10, purchased: false, category: 'need'},
-                {name: 'Sliding Compound Miter Saw', qty: 1, purchased: false, category: 'want'},
-            ],
         }
     },
 
-    // methods: usually "events" triggered by v-on:
     methods: {
-        //
-        // switchFeatures(i, j) {
-        //     let a = this.featureList[i]
-        //     let b = this.featureList[j]
-        //     let storeA = a.position
-        //     a.position = b.position
-        //     b.position = storeA.position
-        // },
-        // switchCategories(i, j) {
-        //     let a = this.categoryList.find(x => x.position === i)
-        //     console.log(a)
-        //     let b = this.categoryList.find(x => x.position === j)
-        //     console.log(b)
-        //     let storeA = a.position
-        //     a.position = b.position
-        //     b.position = storeA.position
-        // },
-
 
     },
 
