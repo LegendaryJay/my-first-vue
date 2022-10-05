@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GET IT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- favicon - https://realfavicongenerator.net -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <!--    <link rel="manifest" href="images/site.webmanifest">-->
+    <link rel="mask-icon" href="images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- fonts / icons / css -->
+    <link href="https://fonts.googleapis.com/css?family=Kreon:700|Hind" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/84c5b245a1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/app.min.css">
+    <link rel="stylesheet" href="css/thing.css">
+</head>
+<body class="bg-black">
+<div id="app">
+
+
+    <nav class="navbar px-3">
+        <span class="navbar-brand">Spirit Tree Mod</span>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addItemModal"
+                title="Add Item">
+            <i class="fas fa-plus"></i> ADD IT
+        </button>
+    </nav>
+    <div class="container">
+        <page-component
+                :page-categories="categoryList"
+                :page-features="featureList"
+        ></page-component>
+    </div>
+    <app-modal>
+
+    </app-modal>
+</div>
+
+<!-- Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        // set focus to name field when modal is opened
+        $('#addItemModal').on('shown.bs.modal', function () {
+            $('#name').focus();
+        });
+    });
+</script>
+
+<!-- Vue Application -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="js/app.js"></script>
+<script src="js/app-components.js"></script>
+<script src="js/category-components.js"></script>
+<script src="js/feature-components.js"></script>
+<script>
+    // start the app after all the other JS has been loaded
+    app.mount('#app');
+</script>
+
+</body>
+</html>
