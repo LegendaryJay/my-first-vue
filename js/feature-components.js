@@ -136,6 +136,7 @@ app.component('FeatureListItem', {
                   @remove="remove"
                   :item="feature"
                   :index="index"
+                  edit-link="#feature-model"
                   :array-length="this.$parent.features.length"
                   :icon-size=3
               ></edit-icons>

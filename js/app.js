@@ -1,6 +1,12 @@
 const app = Vue.createApp({
     data: function () {
         return {
+            editCategoryItem: {
+                title: 'test',
+
+            }
+            ,
+            editFeaturesItem: undefined,
             categoryNextIndex: 2,
             featureNextIndex: 4,
             currentPage: {
@@ -82,6 +88,10 @@ const app = Vue.createApp({
     },
 
     methods: {
+        editCategory(item) {
+            this.editCategoryItem = item
+
+        }
 
     },
 

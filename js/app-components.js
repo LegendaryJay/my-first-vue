@@ -5,7 +5,7 @@
 app.component('pageComponent', {
         data: function () {
             return {
-                currentPage: 0
+                currentPage: 0,
             }
         },
         methods: {
@@ -23,6 +23,18 @@ app.component('pageComponent', {
             },
             removeFeature(item) {
                 this.$parent.featureList = this.$parent.featureList.filter(x => item.id !== x.id)
+            },
+            editFeature(item){
+
+            },
+            editCategory(item) {
+                this.$emit('edit-category', item)
+            },
+            newFeature(){
+
+            },
+            newCategory(){
+
             }
         },
         props: {
@@ -37,7 +49,6 @@ app.component('pageComponent', {
         },
         computed: {
             orderedCategories: function () {
-                console.log(this.pageCategories)
                 let newArray = this.pageCategories.sort((a, b) => a.position - b.position)
                 newArray.push(
 
@@ -58,6 +69,7 @@ app.component('pageComponent', {
               :categories="orderedCategories"
               @change-page="changePage"
               @remove="removeCategory"
+              @edit="editCategory"
           ></category-list>
 
           <feature-list
@@ -65,6 +77,7 @@ app.component('pageComponent', {
               :categories="orderedCategories"
               @change-page="changePage"
               @remove="removeFeature"
+              @edit="editFeature"
           ></feature-list>
           </div>
         `
@@ -86,6 +99,10 @@ app.component('editIcons', {
             },
             item: {
                 type: Object,
+                required: true,
+            },
+            editLink: {
+                type: String,
                 required: true,
             },
 
@@ -157,7 +174,9 @@ app.component('editIcons', {
           >
             <i class="fa-solid fa-caret-down" :class="iconSizeClass()"></i>
           </div>
-          <div class="edit-icon-set"
+          <div class="edit-icon-set" 
+               data-bs-toggle="modal" 
+               :data-bs-target="'#' + editLink"
                @click.stop="this.edit()"
           >
             <i class="fa-solid fa-pen-to-square" :class="iconSizeClass()"></i>
@@ -199,8 +218,7 @@ app.component('AppModal', {
                 </div>
                 <div class="modal-footer">
                   <slot name="footer">
-                    <close-button>
-                    </close-button>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal"></button>
                   </slot>
                 </div>
               </div>
@@ -234,34 +252,3 @@ app.component('AppModal', {
 //     item = object
 // }
 
-
-app.component('categoryModal', {
-        props: {
-            category: {
-                type: Object,
-            },
-
-        },
-        methods: {
-            onSubmit() {
-                this.$emit('on-submit', this.category)
-            },
-            onDelete() {
-                this.$emit('on-delete', this.category)
-            },
-        },
-        template: `
-          <app-modal
-              id="category-modal"
-              title="Edit Category"
-          >
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input id="name" type="text" class="form-control" v-model:category.name autofocus>
-          </div>
-          <template #footer>
-            <button type="submit" class="btn btn-primary">Save</button>
-          </template>
-          </app-modal>`
-    }
-)

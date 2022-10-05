@@ -28,20 +28,22 @@
 
     <nav class="navbar px-3">
         <span class="navbar-brand">Spirit Tree Mod</span>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addItemModal"
-                title="Add Item">
-            <i class="fas fa-plus"></i> ADD IT
-        </button>
+        <button class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#category-modal"></button>
     </nav>
+
     <div class="container">
         <page-component
                 :page-categories="categoryList"
                 :page-features="featureList"
+                @edit-category="editCategory"
         ></page-component>
     </div>
-    <app-modal>
-
-    </app-modal>
+    <category-modal
+            :category="editCategoryItem">
+    </category-modal>
+    <!--    <feature-modal>-->
+    <!--    </feature-modal>-->
 </div>
 
 <!-- Bootstrap -->
